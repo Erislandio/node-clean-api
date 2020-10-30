@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:staged": "jest",
+    "test:staged": "jest --passWishNoTests",
     "test": "jest",
     "test:watch": "jest --watch",
     "jest:clean": "jest --clearCache"
