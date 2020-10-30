@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test:staged": "jest",
-    "test": "jest"
+    "test": "jest",
+    "jest:clean": "jest --clearCache"
   },
   "repository": {
     "type": "git",
