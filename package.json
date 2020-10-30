@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:staged": "jest --passWishNoTests",
+    "test:staged": "jest --passWithNoTests",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --passWithNoTests",
     "jest:clean": "jest --clearCache"
   },
   "repository": {
