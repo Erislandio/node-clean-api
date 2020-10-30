@@ -7,7 +7,6 @@ describe('Signup Controller', () => {
 
     const httpRequest = {
       body: {
-        name: 'any_name',
         email: 'any@email',
         password: 'any_pass',
         passwordConfirmation: 'any_pass'
