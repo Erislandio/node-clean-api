@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Erislandio/node-clean-api/issues"
   },
-  "homepage": "https://github.com/Erislandio/node-clean-api#readme"
+  "homepage": "https://github.com/Erislandio/node-clean-api#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.0.0"
+  }
 }
