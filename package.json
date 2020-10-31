@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:staged": "jest --passWithNoTests",
     "test": "jest",
-    "test:watch": "jest --watch --passWithNoTests",
-    "jest:clean": "jest --clearCache"
+    "test:unit": "jest --watch --passWithNoTests --silent --noStackTrace -c jest-unit-config.js",
+    "test:integration": "jest --watch --passWithNoTests --silent --noStackTrace -c jest-integration-config.js",
+    "test:verbose": "jest --passWithNoTests --runInBand",
+    "test:clean": "jest --clearCache",
+    "test:staged": "jest --findRelatedTests",
+    "test:ci": "jest --coverage --silent"
   },
   "repository": {
     "type": "git",
