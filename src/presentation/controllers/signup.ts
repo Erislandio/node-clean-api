@@ -1,7 +1,6 @@
 import { InvalidParamError } from './errors/invalidParamError'
 import { MissingParamError } from './errors/missingParamError'
-import { ServerError } from './errors/serverError'
-import { badRequest } from './helpers/httpHelper'
+import { badRequest, serverError } from './helpers/httpHelpers'
 import { Controller } from './protocols/controller.interface'
 import { EmailValidator } from './protocols/emailValidator.interface'
 import { HttpRequest, HttpResponse } from './protocols/http.interface'
@@ -26,10 +25,7 @@ export class SingUpController implements Controller {
 
       return null
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: new ServerError()
-      }
+      return serverError()
     }
   }
 }
