@@ -13,7 +13,7 @@ const makeSut = (): BcryptAdpter => {
   return new BcryptAdpter(salt)
 }
 
-describe('BcryotAdpter', () => {
+describe('BcryptAdapter', () => {
   test('Should call bycript with corret value', async () => {
     const sut = makeSut()
     const hashSpy = jest.spyOn(bcrypt, 'hash')
