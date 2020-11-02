@@ -44,7 +44,10 @@
     "@types/bcrypt": "^3.0.0"
   },
   "dependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
+    "@types/mongodb": "^3.5.32",
     "bcrypt": "^5.0.0",
+    "mongodb": "^3.6.2",
     "validator": "^13.1.17"
   }
 }
