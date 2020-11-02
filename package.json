@@ -10,7 +10,8 @@
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:clean": "jest --clearCache",
     "test:staged": "jest --findRelatedTests",
-    "test:ci": "jest --coverage --silent"
+    "test:ci": "jest --coverage --silent",
+    "start": "sucrase-node src/main/server.ts"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "husky": "^4.3.0",
     "jest": "^26.6.1",
     "lint-staged": "^10.5.0",
+    "sucrase": "^3.16.0",
     "ts-jest": "^26.4.3",
     "typescript": "^4.0.5"
   },
