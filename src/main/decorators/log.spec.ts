@@ -1,5 +1,23 @@
+import { LogErrorRepository } from '../../data/protocols/logErrorRepository'
+import { serverError } from '../../presentation/helpers/httpHelpers'
 import { Controller, HttpRequest, HttpResponse } from '../../presentation/protocols'
 import { LogControllerDecorator } from './log'
+
+type SutTypes = {
+  sut: Controller
+  controllerStub: Controller
+  logErrorRepositoryStub: LogErrorRepository
+}
+
+const makeLogErrorRepository = (): LogErrorRepository => {
+  class LogErrorRepositoryStub implements LogErrorRepository {
+    async log (stack: string): Promise<void> {
+      return new Promise(resolve => resolve())
+    }
+  }
+
+  return new LogErrorRepositoryStub()
+}
 
 const makeControllerStub = (): Controller => {
   class ControllerStub implements Controller {
@@ -22,16 +40,22 @@ const makeControllerStub = (): Controller => {
   return new ControllerStub()
 }
 
-const makeSut = (stub: Controller): Controller => {
-  const sut = new LogControllerDecorator(stub)
+const makeSut = (): SutTypes => {
+  const controllerStub = makeControllerStub()
+  const logErrorRepositoryStub = makeLogErrorRepository()
+  const sut = new LogControllerDecorator(controllerStub, logErrorRepositoryStub)
 
-  return sut
+  return {
+    sut,
+    controllerStub,
+    logErrorRepositoryStub
+  }
 }
 
 describe('Log controller decorator', () => {
-  const controllerStub = makeControllerStub()
-  const sut = makeSut(controllerStub)
   test('Should call controller handle', async () => {
+    const { sut, controllerStub } = makeSut()
+
     const handleSpy = jest.spyOn(controllerStub, 'handle')
 
     const httpRequest = {
@@ -48,6 +72,8 @@ describe('Log controller decorator', () => {
   })
 
   test('Should return the same result of the controller', async () => {
+    const { sut } = makeSut()
+
     const httpRequest = {
       body: {
         email: 'any@email.com',
@@ -70,5 +96,26 @@ describe('Log controller decorator', () => {
         }
       }
     )
+  })
+
+  test('Should call LogErrorRepository with correct error if controller returns a server error', async () => {
+    const { sut, controllerStub, logErrorRepositoryStub } = makeSut()
+    const fakeError = new Error()
+    fakeError.stack = 'any_stack'
+    const errorMock = serverError(fakeError)
+    const logSpy = jest.spyOn(logErrorRepositoryStub, 'log')
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise(resolve => resolve(errorMock)))
+
+    const httpRequest = {
+      body: {
+        email: 'any@email.com',
+        name: 'any_name',
+        password: 'any_pass',
+        passwordConfirmation: 'any_pass'
+      }
+    }
+
+    await sut.handle(httpRequest)
+    expect(logSpy).toHaveBeenCalledWith('any_stack')
   })
 })
