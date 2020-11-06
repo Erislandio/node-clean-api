@@ -7,8 +7,14 @@ export const routerAdapter = (controller: Controller): any => {
       body: req.body
     }
 
-    const httpResponse = await controller.handle(httpRequest)
-    res.status(httpResponse.statusCode)
-    res.json(httpResponse.body)
+    const { body, statusCode } = await controller.handle(httpRequest)
+
+    if (statusCode === 2000) {
+      res.status(statusCode).json(body)
+    } else {
+      res.status(statusCode).json({
+        error: body.message
+      })
+    }
   }
 }
