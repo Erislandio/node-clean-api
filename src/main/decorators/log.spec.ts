@@ -11,7 +11,7 @@ type SutTypes = {
 
 const makeLogErrorRepository = (): LogErrorRepository => {
   class LogErrorRepositoryStub implements LogErrorRepository {
-    async log (stack: string): Promise<void> {
+    async logError (stack: string): Promise<void> {
       return new Promise(resolve => resolve())
     }
   }
@@ -52,20 +52,22 @@ const makeSut = (): SutTypes => {
   }
 }
 
+const makeHttpRequest = (): HttpRequest => ({
+  body: {
+    email: 'any@email.com',
+    name: 'any_name',
+    password: 'any_pass',
+    passwordConfirmation: 'any_pass'
+  }
+})
+
 describe('Log controller decorator', () => {
   test('Should call controller handle', async () => {
     const { sut, controllerStub } = makeSut()
 
     const handleSpy = jest.spyOn(controllerStub, 'handle')
 
-    const httpRequest = {
-      body: {
-        email: 'any@email.com',
-        name: 'any_name',
-        password: 'any_pass',
-        passwordConfirmation: 'any_pass'
-      }
-    }
+    const httpRequest = makeHttpRequest()
 
     await sut.handle(httpRequest)
     expect(handleSpy).toHaveBeenCalledWith(httpRequest)
@@ -74,14 +76,7 @@ describe('Log controller decorator', () => {
   test('Should return the same result of the controller', async () => {
     const { sut } = makeSut()
 
-    const httpRequest = {
-      body: {
-        email: 'any@email.com',
-        name: 'any_name',
-        password: 'any_pass',
-        passwordConfirmation: 'any_pass'
-      }
-    }
+    const httpRequest = makeHttpRequest()
 
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(
@@ -103,17 +98,10 @@ describe('Log controller decorator', () => {
     const fakeError = new Error()
     fakeError.stack = 'any_stack'
     const errorMock = serverError(fakeError)
-    const logSpy = jest.spyOn(logErrorRepositoryStub, 'log')
+    const logSpy = jest.spyOn(logErrorRepositoryStub, 'logError')
     jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise(resolve => resolve(errorMock)))
 
-    const httpRequest = {
-      body: {
-        email: 'any@email.com',
-        name: 'any_name',
-        password: 'any_pass',
-        passwordConfirmation: 'any_pass'
-      }
-    }
+    const httpRequest = makeHttpRequest()
 
     await sut.handle(httpRequest)
     expect(logSpy).toHaveBeenCalledWith('any_stack')

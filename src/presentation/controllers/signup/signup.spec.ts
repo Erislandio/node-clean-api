@@ -208,7 +208,7 @@ describe('Signup Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError())
+    expect(httpResponse.body).toEqual(new ServerError(null))
   })
 
   test('Should return 500 if AddAccount throws', async () => {
@@ -220,7 +220,7 @@ describe('Signup Controller', () => {
           return resolve()
         }
 
-        return reject(new ServerError())
+        return reject(new ServerError(null))
       })
     })
 
@@ -235,7 +235,7 @@ describe('Signup Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError())
+    expect(httpResponse.body).toEqual(new ServerError(null))
   })
 
   test('Should return 200 if valid data is provided', async () => {
