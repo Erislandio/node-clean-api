@@ -18,7 +18,10 @@
     "url": "git+https://github.com/Erislandio/node-clean-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "email": "erislandiosoares21@gmail.com",
+    "name": "Erislandio"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Erislandio/node-clean-api/issues"
